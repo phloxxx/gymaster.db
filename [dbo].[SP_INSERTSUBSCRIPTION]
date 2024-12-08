@@ -1,0 +1,23 @@
+USE [GYMASTER]
+GO
+/****** Object:  StoredProcedure [dbo].[SP_INSERTSUBSCRIPTION]    Script Date: 09/12/2024 12:46:42 am ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[SP_INSERTSUBSCRIPTION]
+    @SUB_NAME VARCHAR(20),
+    @DURATION VARCHAR(10),
+    @PRICE MONEY
+AS
+BEGIN
+    IF @DURATION NOT IN ('Monthly', 'Quarterly', 'Semestral', 'Annually')
+    BEGIN
+        RAISERROR('Invalid subscription duration. Must be Monthly, Quarterly, Semestral, or Annually.', 16, 1);
+        RETURN;
+    END
+
+    INSERT INTO SUBSCRIPTION (SUB_NAME, DURATION, PRICE)
+    VALUES (@SUB_NAME, @DURATION, @PRICE)
+END
